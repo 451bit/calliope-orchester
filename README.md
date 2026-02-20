@@ -1,6 +1,6 @@
 # 🎵 Calliope Mini Orchester – Projektanleitung
 
-**Klasse:** 10 (Leistungskurs Informatik)  
+**Klasse:** 10 Informatik
 **Sozialform:** Partnerarbeit  
 **Dauer:** ca. 6–8 Unterrichtsstunden  
 **Material:** 3–4 Calliope mini (mind. 1 pro Gruppe + 1 als Dirigent), MakeCode (makecode.calliope.cc)
