@@ -91,7 +91,39 @@ Das klingt erst kompliziert – aber mit folgendem Ablauf wird es übersichtlich
 
 **Zahl aus Text lesen:** Den letzten Buchstaben (die Nummer) aus `"CLAIM:0"` könnt ihr mit dem Block `Text → Zeichen ab Position ... im Text ...` herauslesen. Die Nummer ist immer das letzte Zeichen. Alternativ könnt ihr für jede mögliche Nachricht einen eigenen Vergleich machen (also `wenn receivedString = "CLAIM:0" dann ...` usw.) – das ist einfacher und für den Anfang empfohlen.
 
-**Neue Nummer finden:** Wenn ein Konflikt festgestellt wurde, müsst ihr prüfen, welche Nummern noch frei sind, und eine davon wählen. Schreibt dafür eine **eigene Funktion** (unter `Fortgeschritten → Funktionen`), die durch 0, 1, 2 geht und die erste freie zurückgibt.
+**Neue Nummer finden:** Wenn ein Konflikt festgestellt wurde, müsst ihr prüfen, welche Nummern noch frei sind, und eine davon wählen. Schreibt dafür eine **eigene Funktion** – das macht euren Code übersichtlicher und wiederverwendbar, da die Konfliktauflösung mehrfach benötigt werden kann.
+
+**Warum eine eigene Funktion?**  
+Eine Funktion fasst mehrere Schritte unter einem Namen zusammen. Statt denselben Code an jeder Stelle zu wiederholen, ruft ihr einfach `findeFreieNummer()` auf – egal wie oft ein Konflikt auftritt.
+
+**So legt ihr die Funktion in MakeCode an:**
+1. Geht zu `Fortgeschritten → Funktionen → Erstelle eine Funktion`.
+2. Gebt der Funktion den Namen `findeFreieNummer`.
+3. Fügt innerhalb der Funktion einen **Rückgabewert** ein: Den `Rückgabe`-Block (`return`) findet ihr unter `Fortgeschritten → Funktionen`. Er gibt das Ergebnis (die gefundene Nummer) ans rufende Programm zurück.
+
+**Algorithmus der Funktion (Pseudocode):**
+
+```
+Funktion findeFreieNummer():
+  wenn instrument0vergeben = falsch → gib 0 zurück
+  wenn instrument1vergeben = falsch → gib 1 zurück
+  wenn instrument2vergeben = falsch → gib 2 zurück
+  (Notfall: gib 0 zurück)
+```
+
+Die Funktion prüft der Reihe nach alle Instrumente und gibt die **erste freie Nummer** zurück. Sind ausnahmsweise alle vergeben, gibt sie zur Sicherheit `0` zurück (dieser Fall sollte bei korrekter Aushandlung nicht eintreten).
+
+**So ruft ihr die Funktion auf:**  
+Direkt nachdem ein Konflikt erkannt wurde (im Empfangs-Block, wenn `receivedString` eurer eigenen Claim-Nachricht entspricht), setzt ihr `meinInstrument` auf das Ergebnis von `findeFreieNummer()`. Danach sendet ihr das neue CLAIM wie gewohnt:
+
+```
+Konflikt erkannt →
+  setze meinInstrument auf Ergebnis von findeFreieNummer()
+  sende "CLAIM:" + meinInstrument
+```
+
+**Typischer Fehler – alte Nummer freigeben nicht vergessen:**  
+Markiert eure **bisherige Nummer als freigegeben**, bevor ihr `findeFreieNummer()` aufruft! Hattet ihr z.B. Instrument 0, setzt `instrument0vergeben = falsch`, bevor ihr die Funktion aufruft. Sonst gibt die Funktion möglicherweise eure alte (konfliktbehaftete) Nummer erneut zurück, und der Konflikt wird nie aufgelöst.
 
 ### Aufgaben
 1. Implementiert die Aushandlung zunächst für **2 Geräte** (nur Instrumente 0 und 1).
