@@ -1,105 +1,69 @@
 # ============================================================
-# 🎼 DIRIGENT – Calliope Mini Orchester
+# 🎼 DIRIGENT – Calliope Mini Orchester  |  MakeCode-Python
 # ============================================================
 #
 # DEINE AUFGABE:
-#   Programmiere den Dirigenten! Lies die TODOs unten und
-#   fülle die Lücken aus. Die Kommentare erklären dir,
-#   was du jeweils tun sollst.
+#   Importiere diese Datei in MakeCode (makecode.calliope.cc):
+#   Neues Projekt → Python-Ansicht → Code einfügen.
+#   Ergänze die fehlenden TODO-Stellen.
+#   Du kannst jederzeit in die Blöcke-Ansicht wechseln!
 #
 # WAS DER DIRIGENT TUN SOLL:
-#   - Beim Start: "DIR" auf dem Display anzeigen
-#   - Taste A:    "START" per Funk senden, Pfeil-Symbol zeigen
-#   - Taste B:    "STOP"  per Funk senden, Kreuz-Symbol zeigen
-#   - Taste A+B:  Countdown 3→2→1, dann "START" senden
+#   - Beim Start:  "DIR" auf dem Display anzeigen
+#   - Taste A:     "START" senden → alle Instrumente spielen
+#   - Taste B:     "STOP" senden  → alle hören auf
+#   - Taste A+B:   Countdown 3→2→1, dann "START" senden
 #
-# WICHTIG:
-#   Alle Geräte im Orchester müssen dieselbe Funkgruppe
-#   verwenden! Wir nehmen Gruppe 42.
+# WICHTIG: Alle Geräte müssen dieselbe Funkgruppe nutzen!
+#          Wir verwenden Gruppe 42.
 # ============================================================
 
-from microbit import *
-import radio
 
-# ── Schritt 1: Funk einschalten und Gruppe setzen ───────────
-# Der Calliope mini kann per Funk mit anderen Geräten
-# kommunizieren – aber nur, wenn alle dieselbe Gruppe haben.
-
-# TODO: Schalte den Funk ein
-# radio.on()
-
+# ── Funk einrichten ──────────────────────────────────────────
 # TODO: Setze die Funkgruppe auf 42
-#       (Alle Instrumente müssen dieselbe Gruppe haben!)
-# radio.config(group=???)
+# radio.set_group(???)
+
+# TODO: Zeige beim Start "DIR" auf dem Display
+# basic.show_string("???")
 
 
-# ── Schritt 2: Begrüßung beim Start ─────────────────────────
-# Beim Start soll das Display kurz "DIR" anzeigen,
-# damit man weiß: dieses Gerät ist der Dirigent.
+# ── Taste A: Startsignal senden ──────────────────────────────
+def on_button_pressed_a():
+    # TODO: Sende "START" per Funk
+    # radio.send_string("???")
 
-# TODO: Zeige "DIR" auf dem Display
-# display.scroll(???)
+    # TODO: Zeige ein Symbol (z. B. Pfeil nach oben)
+    # basic.show_icon(IconNames.ArrowNorth)
+    # basic.pause(500)
+    # basic.clear_screen()
+    pass
 
-
-# ── Hauptschleife ────────────────────────────────────────────
-# Die while-True-Schleife läuft endlos. Darin prüfen wir
-# immer wieder, ob eine Taste gedrückt wurde.
-
-while True:
-
-    # ── Taste A: Sofort starten ──────────────────────────────
-    # Wenn Taste A gedrückt wird, schicken wir "START" an
-    # alle Instrumente. Sie beginnen dann zu spielen.
-
-    # TODO: Prüfe, ob Taste A (allein) gedrückt wurde
-    #       Tipp: button_a.was_pressed() gibt True oder False zurück
-    #             Aber: Taste A+B zählt hier NICHT!
-    #             → du kannst das prüfen mit:
-    #               button_a.was_pressed() and not button_b.is_pressed()
-    if False:  # ← ersetze False durch deine Bedingung
-        pass   # ← ersetze pass durch deinen Code
-
-        # TODO: Sende "START" per Funk
-        # radio.send(???)
-
-        # TODO: Zeige ein Symbol (z. B. Pfeil nach oben)
-        # display.show(Image.ARROW_N)
-        # sleep(500)
-        # display.clear()
+input.on_button_pressed(Button.A, on_button_pressed_a)
 
 
-    # ── Taste B: Stopp senden ────────────────────────────────
-    # Wenn Taste B gedrückt wird, schicken wir "STOP".
-    # Die Instrumente hören dann auf zu spielen.
+# ── Taste B: Stoppsignal senden ──────────────────────────────
+def on_button_pressed_b():
+    # TODO: Sende "STOP" per Funk
+    # radio.send_string("???")
 
-    # TODO: Prüfe, ob Taste B gedrückt wurde
-    if False:  # ← ersetze False durch deine Bedingung
-        pass   # ← ersetze pass durch deinen Code
+    # TODO: Zeige ein Stopp-Symbol
+    # basic.show_icon(IconNames.No)
+    # basic.pause(500)
+    # basic.clear_screen()
+    pass
 
-        # TODO: Sende "STOP" per Funk
-        # radio.send(???)
-
-        # TODO: Zeige ein "Nein"-Symbol
-        # display.show(Image.NO)
-        # sleep(500)
-        # display.clear()
+input.on_button_pressed(Button.B, on_button_pressed_b)
 
 
-    # ── Taste A+B gleichzeitig: Countdown ───────────────────
-    # Wenn beide Tasten gleichzeitig gedrückt werden,
-    # zählen wir erst 3→2→1 herunter, dann geht's los.
+# ── Taste A+B: Countdown, dann starten ──────────────────────
+def on_button_pressed_ab():
+    # TODO: Countdown von 3 bis 1
+    #   Tipp: for i in range(3, 0, -1):
+    #             basic.show_number(i)
+    #             basic.pause(800)
+    #         basic.clear_screen()
 
-    # TODO: Prüfe, ob Taste A UND Taste B gleichzeitig gedrückt sind
-    #       Tipp: button_a.is_pressed() and button_b.is_pressed()
-    if False:  # ← ersetze False durch deine Bedingung
-        pass   # ← ersetze pass durch deinen Code
+    # TODO: Dann "START" senden (wie bei Taste A)
+    pass
 
-        # TODO: Countdown von 3 bis 1
-        #       Tipp: Nutze eine for-Schleife mit range(3, 0, -1)
-        #       Zeige die Zahl und warte jeweils 800 ms
-
-        # TODO: Nach dem Countdown "START" senden (wie bei Taste A)
-
-
-    # Kurze Pause, damit der Calliope nicht zu viel Strom verbraucht
-    sleep(100)
+input.on_button_pressed(Button.AB, on_button_pressed_ab)

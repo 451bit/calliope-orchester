@@ -1,37 +1,25 @@
 # ============================================================
-# 🎵 INSTRUMENT – Schritt 1
+# 🎵 INSTRUMENT – Schritt 1  |  MakeCode-Python
 # Töne mit Dauer in der for-Schleife abspielen
 # ============================================================
 #
-# In diesem Schritt lernst du:
-#   - Wie man eine for-Schleife mit einem Index i nutzt
-#   - Wie man mit music.pitch() einen Ton abspielt
-#   - Was der Unterschied zwischen Frequenz und Dauer ist
-#   - Wie man eine Pause (Frequenz 0) einbaut
+# Drücke Taste A → die Melodie wird einmal abgespielt.
 #
-# Am Ende spielt dein Calliope die Ode an die Freude!
+# In diesem Schritt siehst du:
+#   - wie die for-Schleife mit Index i funktioniert
+#   - wie music.play_tone(freq, ms) einen Ton abspielt
+#   - wie Pausen (Frequenz 0) behandelt werden
 # ============================================================
-
-from microbit import *
-import music
 
 # ── Die Noten ────────────────────────────────────────────────
 #
-# Frequenz = Tonhöhe in Hz (Schwingungen pro Sekunde)
-#   Beispiele:
-#     261 Hz ≈ C4 (mittleres C)
-#     294 Hz ≈ D4
-#     329 Hz ≈ E4
-#     349 Hz ≈ F4
-#     392 Hz ≈ G4
+# Frequenz = Tonhöhe in Hertz (Hz):
+#   261 = C4   294 = D4   329 = E4   349 = F4   392 = G4
 #
-# Dauer = wie lange der Ton klingt, in Millisekunden (ms)
-#   400 ms = ein normaler Schlag
-#   800 ms = doppelt so langer Schlag (Halbe Note)
-#   200 ms = kurzer Schlag (Achtel)
+# Dauer in Millisekunden (ms):
+#   400 ms = normaler Schlag  |  800 ms = langer Schlag
 #
-# Beide Listen sind gleich lang und gehören zusammen:
-#   note[i] und dauer[i] bilden immer eine Note.
+# Beide Listen gehören zusammen: noten[i] + dauer[i] = eine Note.
 
 noten = [329, 329, 349, 392, 392, 349, 329, 294, 261, 261, 294, 329, 329, 294, 294]
 #  Ton:   E4   E4   F4   G4   G4   F4   E4   D4   C4   C4   D4   E4   E4   D4   D4
@@ -39,57 +27,44 @@ noten = [329, 329, 349, 392, 392, 349, 329, 294, 261, 261, 294, 329, 329, 294, 2
 dauer = [400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 400, 600, 200, 800]
 
 
-# ── Wie die for-Schleife funktioniert ───────────────────────
+# ── Funktion: Melodie abspielen ──────────────────────────────
 #
-#   for i in range(len(noten)):
+# Die for-Schleife zählt i von 0 bis 14 (= len(noten)-1).
 #
-#   → range(len(noten)) erzeugt die Zahlen 0, 1, 2, ..., 14
-#   → beim ersten Durchlauf ist i = 0
-#   → beim zweiten Durchlauf ist i = 1
-#   → ...
-#   → beim letzten Durchlauf ist i = 14
+#   range(len(noten)) erzeugt: 0, 1, 2, 3, …, 14
 #
-#   In jedem Schritt greifen wir mit noten[i] auf die
-#   aktuelle Note zu, und mit dauer[i] auf ihre Länge.
-
+#   noten[i]  → die i-te Frequenz (Indexzugriff)
+#   dauer[i]  → die i-te Dauer
+#
+# music.play_tone(freq, ms) – spielt freq Hz für ms Millisekunden.
+# music.rest(ms)            – Stille für ms Millisekunden.
 
 def spiele_melodie():
-    """Spielt die gesamte Melodie einmal ab."""
-
-    display.show(Image.MUSIC_QUAVERS)  # Symbol während des Spielens
+    basic.show_icon(IconNames.Music)
 
     for i in range(len(noten)):
-
-        freq = noten[i]   # Frequenz der aktuellen Note
-        ms   = dauer[i]   # Dauer der aktuellen Note in ms
+        freq = noten[i]
+        ms = dauer[i]
 
         if freq == 0:
-            # Frequenz 0 bedeutet: Pause – kein Ton
-            music.stop()
-            sleep(ms)
+            # Frequenz 0 bedeutet Pause
+            music.rest(ms)
         else:
-            # music.pitch(frequenz, dauer_in_ms)
-            # wait=True bedeutet: warte, bis der Ton fertig ist,
-            # bevor du weitermachst (Standardverhalten)
-            music.pitch(freq, ms)
+            music.play_tone(freq, ms)
 
-        # Kleine Lücke zwischen den Noten (macht die Melodie klarer)
-        sleep(30)
+        # Kurze Lücke zwischen den Noten
+        basic.pause(30)
 
-    display.show(Image.YES)  # ✓ nach dem Spielen
-    sleep(800)
-    display.clear()
+    basic.show_icon(IconNames.Yes)
+    basic.pause(800)
+    basic.clear_screen()
 
 
-# ── Hauptprogramm ────────────────────────────────────────────
-#
-# Der Calliope spielt die Melodie einmal beim Start,
-# und dann immer wieder, wenn Taste A gedrückt wird.
+# ── Taste A: Melodie starten ─────────────────────────────────
+def on_button_pressed_a():
+    spiele_melodie()
 
-display.scroll("S1", delay=80)  # "S1" = Schritt 1
+input.on_button_pressed(Button.A, on_button_pressed_a)
 
-while True:
-    if button_a.was_pressed():
-        spiele_melodie()
-
-    sleep(100)
+# Hinweis beim Start
+basic.show_string("S1", 80)
